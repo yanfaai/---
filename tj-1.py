@@ -19,6 +19,27 @@ font.setPointSize(10)
 qlist = []
 jdlist=[]
 
+def set_mode(DF_):
+
+    columns = [id for id in DF_.columns]
+    # model = QStandardItemModel(len(df_1), len(columns))  # 设置数据层次结构，rows行cols列
+    model = Window_(len(DF_), len(columns))  # 设置数据层次结构，rows行cols列
+    model.setHorizontalHeaderLabels([str(i) for i in columns])  # 设置列名
+    for row in range(len(DF_)):
+        for column in range(len(columns)):
+            if column == 0 or row==0:
+                item = QStandardItem(str(DF_.iloc[row, column]))
+                item.setFont(font)
+                item.setForeground(QBrush(QtGui.QColor('dark')))  # 设置文本颜色
+                model.setItem(row, column, item)  # 设置每个位置的文本值
+            else:
+                item = QStandardItem(str(DF_.iloc[row, column]))
+                item.setForeground(QBrush(QtGui.QColor('blue')))  # 设置文本颜色
+                model.setItem(row, column, item)  # 设置每个位置的文本值
+    
+    return model
+
+
 class Window_(QStandardItemModel):
 
     def data(self, index, role=None):
@@ -215,22 +236,7 @@ class Ui_MainWindow(QTabWidget):
 
         df_1.insert(0, '费用项目', df_1.index)
 
-
-        columns = [id for id in df_1.columns]
-        # model = QStandardItemModel(len(df_1), len(columns))  # 设置数据层次结构，rows行cols列
-        model = Window_(len(df_1), len(columns))  # 设置数据层次结构，rows行cols列
-        model.setHorizontalHeaderLabels([str(i) for i in columns])  # 设置列名
-        for row in range(len(df_1)):
-            for column in range(len(columns)):
-                if column == 0:
-                    item = QStandardItem(str(df_1.iloc[row, column]))
-                    item.setFont(font)
-                    item.setForeground(QBrush(QtGui.QColor('red')))  # 设置文本颜色
-                    model.setItem(row, column, item)  # 设置每个位置的文本值
-                else:
-                    item = QStandardItem(str(df_1.iloc[row, column]))
-                    item.setForeground(QBrush(QtGui.QColor('blue')))  # 设置文本颜色
-                    model.setItem(row, column, item)  # 设置每个位置的文本值
+        model=set_mode(df_1)
 
         self.tab_1TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
         self.tab_1TableView.setSortingEnabled(False)  # 设置是否排序
@@ -335,20 +341,7 @@ class Ui_MainWindow(QTabWidget):
         DF_.insert(0,'0',DF.columns)
         DF=DF_.T
 
-        columns = [id for id in DF.columns]
-        model = Window_(len(DF), len(columns))  # 设置数据层次结构，rows行cols列
-        model.setHorizontalHeaderLabels([str(i) for i in columns])  # 设置列名
-        for row in range(len(DF)):
-            for column in range(len(columns)):
-                if column == 0 or row==0:
-                    item = QStandardItem(str(DF.iloc[row, column]))
-                    item.setForeground(QBrush(QtGui.QColor('green')))  # 设置文本颜色
-                    item.setFont(font)
-                    model.setItem(row, column, item)  # 设置每个位置的文本值
-                else:
-                    item = QStandardItem(str(DF.iloc[row, column]))
-                    item.setForeground(QBrush(QtGui.QColor('BLUE')))  # 设置文本颜色
-                    model.setItem(row, column, item)  # 设置每个位置的文本值
+        model=set_mode(DF)
 
         self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
         self.tab_0TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
@@ -389,20 +382,7 @@ class Ui_MainWindow(QTabWidget):
             DF_3=DF_3.T
             DF_3=DF_3.round(2)
 
-            columns = [id for id in DF_3.columns]
-            model = Window_(len(DF_3), len(columns))  # 设置数据层次结构，rows行cols列
-            model.setHorizontalHeaderLabels([str(i) for i in columns])  # 设置列名
-            for row in range(len(DF_3)):
-                for column in range(len(columns)):
-                    if column == 0 or row==0:
-                        item = QStandardItem(str(DF_3.iloc[row, column]))
-                        item.setForeground(QBrush(QtGui.QColor('green')))  # 设置文本颜色
-                        item.setFont(font)
-                        model.setItem(row, column, item)  # 设置每个位置的文本值
-                    else:
-                        item = QStandardItem(str(DF_3.iloc[row, column]))
-                        item.setForeground(QBrush(QtGui.QColor('BLUE')))  # 设置文本颜色
-                        model.setItem(row, column, item)  # 设置每个位置的文本值
+            model=set_mode(DF_3)
 
             self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
             self.tab_0TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
@@ -470,19 +450,8 @@ class Ui_MainWindow(QTabWidget):
             dfs_1 =dfs_.drop([x for x in df_s1.columns if re.match('.*2021.*预算', x)],axis=1)
             dfs_1.insert(0, '项目', df_item)
 
-            mod = Window_(dfs_1.shape[0], dfs_1.shape[1])
-            mod.setHorizontalHeaderLabels(dfs_1.columns)
-            for row in range(dfs_1.shape[0]):
-                for col in range(dfs_1.shape[1]):
-                    if row == 0 or col == 0:
-                        item = QStandardItem(dfs_1.iloc[row, col])
-                        item.setForeground(QBrush(QtGui.QColor('dark')))
-                        item.setFont(font)
-                        mod.setItem(row, col, item)
-                    else:
-                        item = QStandardItem(str(dfs_1.iloc[row, col]))
-                        item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                        mod.setItem(row, col, item)
+            mod=set_mode(dfs_1)
+
             self.tab_0TableView.setModel(mod)
             self.tab_0TableView.horizontalHeader().setVisible(False)
             self.tab_0TableView.verticalHeader().setVisible(False)
@@ -515,19 +484,8 @@ class Ui_MainWindow(QTabWidget):
             dfs_1 = dfs_.drop([x for x in df_s1.columns if re.match('.*2021.*预算', x)],axis=1)
             dfs_1.insert(0, '项目', df_item)
 
-            mod=Window_(dfs_1.shape[0],dfs_1.shape[1])
-            mod.setHorizontalHeaderLabels(dfs_1.columns)
-            for row in range(dfs_1.shape[0]):
-                for col in range(dfs_1.shape[1]):
-                    if row==0 or col==0:
-                        item=QStandardItem(dfs_1.iloc[row,col])
-                        item.setForeground(QBrush(QtGui.QColor('dark')))
-                        item.setFont(font)
-                        mod.setItem(row,col,item)
-                    else:
-                        item = QStandardItem(str(dfs_1.iloc[row, col]))
-                        item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                        mod.setItem(row,col,item)
+            mod=set_mode(df_s1)
+
             self.tab_0TableView.setModel(mod)
             self.tab_0TableView.horizontalHeader().setVisible(False)
             self.tab_0TableView.verticalHeader().setVisible(False)
@@ -558,19 +516,8 @@ class Ui_MainWindow(QTabWidget):
 
             dfs_.insert(0, '项目', df_item)
 
-            mod = Window_(dfs_.shape[0], dfs_.shape[1])
-            mod.setHorizontalHeaderLabels(dfs_.columns)
-            for row in range(dfs_.shape[0]):
-                for col in range(dfs_.shape[1]):
-                    if row == 0 or col == 0:
-                        item = QStandardItem(dfs_.iloc[row, col])
-                        item.setForeground(QBrush(QtGui.QColor('dark')))
-                        item.setFont(font)
-                        mod.setItem(row, col, item)
-                    else:
-                        item = QStandardItem(str(dfs_.iloc[row, col]))
-                        item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                        mod.setItem(row, col, item)
+            mod=set_mode(dfs_)
+
             self.tab_0TableView.setModel(mod)
             self.tab_0TableView.horizontalHeader().setVisible(False)
             self.tab_0TableView.verticalHeader().setVisible(False)
@@ -666,26 +613,14 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf = ml_df.T
 
-                mod = Window_(len(modf), len(modf.columns))
-                mod.setHorizontalHeaderLabels(modf.columns)
-                for row in range(len(modf)):
-                    for col in range(len(modf.columns)):
-                        if row == 0 or col == 0:
-                            item = QStandardItem(modf.iloc[row, col])
-                            item.setForeground(QBrush(QtGui.QColor('dark')))
-                            item.setFont(font)
-                            mod.setItem(row, col, item)
-                        else:
-                            item = QStandardItem(str(modf.iloc[row, col]))
-                            item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                            mod.setItem(row, col, item)
+                mod=set_mode(modf)
 
-                        self.tab_0TableView.setModel(mod)
-                        self.tab_0TableView.horizontalHeader().setVisible(False)
-                        self.tab_0TableView.verticalHeader().setVisible(False)
-                        self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                        self.tab_0TableView.resizeColumnsToContents()
-                        self.tab_0TableView.setColumnWidth(0, 120)
+                self.tab_0TableView.setModel(mod)
+                self.tab_0TableView.horizontalHeader().setVisible(False)
+                self.tab_0TableView.verticalHeader().setVisible(False)
+                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+                self.tab_0TableView.resizeColumnsToContents()
+                self.tab_0TableView.setColumnWidth(0, 120)
 
                 def bar_(self):
                     bar = Bar(init_opts=opts.InitOpts('950px', '280px', bg_color='skyblue'))
@@ -772,26 +707,14 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf=ml_df.T
 
-                mod=Window_(len(modf),len(modf.columns))
-                mod.setHorizontalHeaderLabels(modf.columns)
-                for row in range(len(modf)):
-                    for col in range(len(modf.columns)):
-                        if row==0 or col==0:
-                            item = QStandardItem(modf.iloc[row, col])
-                            item.setForeground(QBrush(QtGui.QColor('dark')))
-                            item.setFont(font)
-                            mod.setItem(row, col, item)
-                        else:
-                            item = QStandardItem(str(modf.iloc[row, col]))
-                            item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                            mod.setItem(row, col, item)
+                mod=set_mode(modf)
 
-                        self.tab_0TableView.setModel(mod)
-                        self.tab_0TableView.horizontalHeader().setVisible(False)
-                        self.tab_0TableView.verticalHeader().setVisible(False)
-                        self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                        self.tab_0TableView.resizeColumnsToContents()
-                        self.tab_0TableView.setColumnWidth(0, 120)
+                self.tab_0TableView.setModel(mod)
+                self.tab_0TableView.horizontalHeader().setVisible(False)
+                self.tab_0TableView.verticalHeader().setVisible(False)
+                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+                self.tab_0TableView.resizeColumnsToContents()
+                self.tab_0TableView.setColumnWidth(0, 120)
 
                 def bar_(self):
                     bar=Bar(init_opts=opts.InitOpts('950px','280px',bg_color='skyblue'))
@@ -875,26 +798,15 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf = ml_df.T
 
-                mod = Window_(len(modf), len(modf.columns))
-                mod.setHorizontalHeaderLabels(modf.columns)
-                for row in range(len(modf)):
-                    for col in range(len(modf.columns)):
-                        if row == 0 or col == 0:
-                            item = QStandardItem(modf.iloc[row, col])
-                            item.setForeground(QBrush(QtGui.QColor('dark')))
-                            item.setFont(font)
-                            mod.setItem(row, col, item)
-                        else:
-                            item = QStandardItem(str(modf.iloc[row, col]))
-                            item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                            mod.setItem(row, col, item)
+                mod=set_mode(modf)
+                
 
-                        self.tab_0TableView.setModel(mod)
-                        self.tab_0TableView.horizontalHeader().setVisible(False)
-                        self.tab_0TableView.verticalHeader().setVisible(False)
-                        self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                        self.tab_0TableView.resizeColumnsToContents()
-                        self.tab_0TableView.setColumnWidth(0, 120)
+                self.tab_0TableView.setModel(mod)
+                self.tab_0TableView.horizontalHeader().setVisible(False)
+                self.tab_0TableView.verticalHeader().setVisible(False)
+                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+                self.tab_0TableView.resizeColumnsToContents()
+                self.tab_0TableView.setColumnWidth(0, 120)
 
                 def bar_(self):
                     bar = Bar(init_opts=opts.InitOpts('950px', '280px', bg_color='skyblue'))
@@ -975,26 +887,14 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf = ml_df.T
 
-                mod = Window_(len(modf), len(modf.columns))
-                mod.setHorizontalHeaderLabels(modf.columns)
-                for row in range(len(modf)):
-                    for col in range(len(modf.columns)):
-                        if row == 0 or col == 0:
-                            item = QStandardItem(modf.iloc[row, col])
-                            item.setForeground(QBrush(QtGui.QColor('dark')))
-                            item.setFont(font)
-                            mod.setItem(row, col, item)
-                        else:
-                            item = QStandardItem(str(modf.iloc[row, col]))
-                            item.setForeground(QBrush(QtGui.QColor('BLUE')))
-                            mod.setItem(row, col, item)
-
-                        self.tab_0TableView.setModel(mod)
-                        self.tab_0TableView.horizontalHeader().setVisible(False)
-                        self.tab_0TableView.verticalHeader().setVisible(False)
-                        self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                        self.tab_0TableView.resizeColumnsToContents()
-                        self.tab_0TableView.setColumnWidth(0, 120)
+                mod=set_mode(modf)
+                
+                self.tab_0TableView.setModel(mod)
+                self.tab_0TableView.horizontalHeader().setVisible(False)
+                self.tab_0TableView.verticalHeader().setVisible(False)
+                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+                self.tab_0TableView.resizeColumnsToContents()
+                self.tab_0TableView.setColumnWidth(0, 120)
 
                 def bar_(self):
                     bar = Bar(init_opts=opts.InitOpts('950px', '280px', bg_color='skyblue'))

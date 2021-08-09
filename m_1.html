@@ -41,16 +41,16 @@
         }
     </style>
     <div class="tab">
-            <button class="tablinks" onclick="showChart(event, '529a70a06f3d4149841feb2fdb83776a')">2021年7月新洲利润</button>
-            <button class="tablinks" onclick="showChart(event, '248650925eb54803af7d2e2e4b9f8b8c')">2021年7月新洲利润预算完成率</button>
+            <button class="tablinks" onclick="showChart(event, '0114d7eaed47445fa03911f12a13ecee')">2021年6月天工费用</button>
+            <button class="tablinks" onclick="showChart(event, '9c24541df9964a1bb256574bf97924b7')">2021年6月天工费用预算完成率</button>
     </div>
 
     <div class="box">
-                <div id="529a70a06f3d4149841feb2fdb83776a" class="chart-container" style="width:950px; height:280px;"></div>
+                <div id="0114d7eaed47445fa03911f12a13ecee" class="chart-container" style="width:950px; height:280px;"></div>
     <script>
-        var chart_529a70a06f3d4149841feb2fdb83776a = echarts.init(
-            document.getElementById('529a70a06f3d4149841feb2fdb83776a'), 'white', {renderer: 'canvas'});
-        var option_529a70a06f3d4149841feb2fdb83776a = {
+        var chart_0114d7eaed47445fa03911f12a13ecee = echarts.init(
+            document.getElementById('0114d7eaed47445fa03911f12a13ecee'), 'white', {renderer: 'canvas'});
+        var option_0114d7eaed47445fa03911f12a13ecee = {
     "backgroundColor": "skyblue",
     "animation": true,
     "animationThreshold": 2000,
@@ -89,14 +89,14 @@
     "series": [
         {
             "type": "bar",
-            "name": "2021\u5e747\u6708\u65b0\u6d32\u5229\u6da6",
+            "name": "2021\u5e746\u6708\u5929\u5de5\u8d39\u7528",
             "legendHoverLink": true,
             "data": [
-                40.0,
-                10.64,
-                -67.61,
-                -78.25,
-                -107.61
+                331.05,
+                266.19,
+                330.88,
+                64.69,
+                -0.17
             ],
             "showBackground": false,
             "barMinHeight": 0,
@@ -119,10 +119,10 @@
     "legend": [
         {
             "data": [
-                "2021\u5e747\u6708\u65b0\u6d32\u5229\u6da6"
+                "2021\u5e746\u6708\u5929\u5de5\u8d39\u7528"
             ],
             "selected": {
-                "2021\u5e747\u6708\u65b0\u6d32\u5229\u6da6": true
+                "2021\u5e746\u6708\u5929\u5de5\u8d39\u7528": true
             },
             "show": true,
             "padding": 5,
@@ -170,9 +170,9 @@
                 }
             },
             "data": [
-                "2021\u5e747\u6708\u9884\u7b97",
-                "2020\u5e747\u6708\u5b9e\u9645",
-                "2021\u5e747\u6708\u5b9e\u9645",
+                "2021\u5e746\u6708\u9884\u7b97",
+                "2020\u5e746\u6708\u5b9e\u9645",
+                "2021\u5e746\u6708\u5b9e\u9645",
                 "\u540c\u6bd4",
                 "\u8f83\u8ba1\u5212"
             ]
@@ -203,7 +203,7 @@
     ],
     "title": [
         {
-            "text": "Bar_\u65b0\u6d32\u5229\u6da6->\u6307\u6807\u5355\u4f4d[\u4e07\u5143:\u5143:\u6807\u5428]",
+            "text": "Bar_\u5929\u5de5\u8d39\u7528->\u6307\u6807\u5355\u4f4d[\u4e07\u5143:\u5143:\u6807\u5428]",
             "padding": 5,
             "itemGap": 10
         }
@@ -294,13 +294,13 @@
         "filterMode": "filter"
     }
 };
-        chart_529a70a06f3d4149841feb2fdb83776a.setOption(option_529a70a06f3d4149841feb2fdb83776a);
+        chart_0114d7eaed47445fa03911f12a13ecee.setOption(option_0114d7eaed47445fa03911f12a13ecee);
     </script>
-                <div id="248650925eb54803af7d2e2e4b9f8b8c" class="chart-container" style="width:950px; height:320px;"></div>
+                <div id="9c24541df9964a1bb256574bf97924b7" class="chart-container" style="width:950px; height:320px;"></div>
     <script>
-        var chart_248650925eb54803af7d2e2e4b9f8b8c = echarts.init(
-            document.getElementById('248650925eb54803af7d2e2e4b9f8b8c'), 'white', {renderer: 'canvas'});
-        var option_248650925eb54803af7d2e2e4b9f8b8c = {
+        var chart_9c24541df9964a1bb256574bf97924b7 = echarts.init(
+            document.getElementById('9c24541df9964a1bb256574bf97924b7'), 'white', {renderer: 'canvas'});
+        var option_9c24541df9964a1bb256574bf97924b7 = {
     "backgroundColor": "skyblue",
     "animation": true,
     "animationThreshold": 2000,
@@ -339,10 +339,10 @@
     "series": [
         {
             "type": "liquidFill",
-            "name": "\u65b0\u6d32\u5229\u6da6\u5b8c\u6210\u7387",
+            "name": "\u5929\u5de5\u8d39\u7528\u5b8c\u6210\u7387",
             "data": [
-                -1.69,
-                2.69
+                0.999,
+                0.0010000000000000009
             ],
             "waveAnimation": true,
             "animationDuration": 2000,
@@ -397,13 +397,13 @@
     },
     "title": [
         {
-            "text": "2021\u5e747\u6708\u65b0\u6d32\u5229\u6da6\u5b8c\u6210\u7387",
+            "text": "2021\u5e746\u6708\u5929\u5de5\u8d39\u7528\u5b8c\u6210\u7387",
             "padding": 5,
             "itemGap": 10
         }
     ]
 };
-        chart_248650925eb54803af7d2e2e4b9f8b8c.setOption(option_248650925eb54803af7d2e2e4b9f8b8c);
+        chart_9c24541df9964a1bb256574bf97924b7.setOption(option_9c24541df9964a1bb256574bf97924b7);
     </script>
     </div>
 
