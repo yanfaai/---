@@ -19,7 +19,7 @@ font.setPointSize(10)
 qlist = []
 jdlist=[]
 
-def set_mode(DF_):
+def set_mode(DF_,tabView):
 
     columns = [id for id in DF_.columns]
     # model = QStandardItemModel(len(df_1), len(columns))  # 设置数据层次结构，rows行cols列
@@ -36,8 +36,17 @@ def set_mode(DF_):
                 item = QStandardItem(str(DF_.iloc[row, column]))
                 item.setForeground(QBrush(QtGui.QColor('blue')))  # 设置文本颜色
                 model.setItem(row, column, item)  # 设置每个位置的文本值
+
+    tabView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
+    tabView.verticalHeader().setVisible(False)  # 影藏垂直标题
+    tabView.horizontalHeader().setVisible(False) # 影藏行标题
+    tabView.setModel(model)
+    # self.tab_0TableView.setColumnWidth(0, 120)
+    tabView.horizontalHeader().setFont(font)
+    tabView.resizeColumnsToContents()
+    tabView.setColumnWidth(0, 120)
     
-    return model
+    # return model
 
 
 class Window_(QStandardItemModel):
@@ -236,18 +245,20 @@ class Ui_MainWindow(QTabWidget):
 
         df_1.insert(0, '费用项目', df_1.index)
 
-        model=set_mode(df_1)
+        set_mode(df_1,self.tab_0TableView)
 
-        self.tab_1TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
-        self.tab_1TableView.setSortingEnabled(False)  # 设置是否排序
-        self.tab_1TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
-        self.tab_1TableView.setAutoFillBackground(True)
-        self.tab_1TableView.setModel(model)
-        self.tab_1TableView.setColumnWidth(0, 240)  # 必须在模型设置了以后，再设置列宽与行高
-        # self.tab_1TableView.setStyleSheet('background-color:#afb4db')，# 父对象设置了就别在设置样式了
+        # model=set_mode(df_1)
 
-        self.tab_1TableView.horizontalHeader().setFont(font)
-        self.tab_1TableView.setShowGrid(True)
+        # self.tab_1TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
+        # self.tab_1TableView.setSortingEnabled(False)  # 设置是否排序
+        # self.tab_1TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
+        # self.tab_1TableView.setAutoFillBackground(True)
+        # self.tab_1TableView.setModel(model)
+        # self.tab_1TableView.setColumnWidth(0, 240)  # 必须在模型设置了以后，再设置列宽与行高
+        # # self.tab_1TableView.setStyleSheet('background-color:#afb4db')，# 父对象设置了就别在设置样式了
+
+        # self.tab_1TableView.horizontalHeader().setFont(font)
+        # self.tab_1TableView.setShowGrid(True)
 
     def setdata_0(self):  # 天工经营指标（数据）
         data = pd.read_excel('天工矿业公司2020年预算目标完成情况统计报表（最终）.xlsx',
@@ -341,16 +352,8 @@ class Ui_MainWindow(QTabWidget):
         DF_.insert(0,'0',DF.columns)
         DF=DF_.T
 
-        model=set_mode(DF)
-
-        self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
-        self.tab_0TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
-        self.tab_0TableView.horizontalHeader().setVisible(False) # 影藏行标题
-        self.tab_0TableView.setModel(model)
-        # self.tab_0TableView.setColumnWidth(0, 120)
-        self.tab_0TableView.horizontalHeader().setFont(font)
-        self.tab_0TableView.resizeColumnsToContents()
-        self.tab_0TableView.setColumnWidth(0, 120)
+        set_mode(DF,self.tab_0TableView)
+       
         DF.rename(index={k: v for k, v in zip(DF.index, DF.项目)}, inplace=True)
       
         qlist.append(DF)
@@ -382,14 +385,9 @@ class Ui_MainWindow(QTabWidget):
             DF_3=DF_3.T
             DF_3=DF_3.round(2)
 
-            model=set_mode(DF_3)
+            # model=set_mode(DF_3)
+            set_mode(DF_3,self.tab_0TableView)
 
-            self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
-            self.tab_0TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
-            self.tab_0TableView.setModel(model)
-            self.tab_0TableView.resizeColumnsToContents()
-            self.tab_0TableView.setColumnWidth(0, 120)
-            self.tab_0TableView.horizontalHeader().setFont(font)
             DF_4=DF_3.T
             DF_4.drop('0',axis=1,inplace=True)
             DF_5=DF_4.T
@@ -450,14 +448,7 @@ class Ui_MainWindow(QTabWidget):
             dfs_1 =dfs_.drop([x for x in df_s1.columns if re.match('.*2021.*预算', x)],axis=1)
             dfs_1.insert(0, '项目', df_item)
 
-            mod=set_mode(dfs_1)
-
-            self.tab_0TableView.setModel(mod)
-            self.tab_0TableView.horizontalHeader().setVisible(False)
-            self.tab_0TableView.verticalHeader().setVisible(False)
-            self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            self.tab_0TableView.resizeColumnsToContents()
-            self.tab_0TableView.setColumnWidth(0, 120)
+            set_mode(dfs_1,self.tab_0TableView)
 
             bar = Bar(init_opts=opts.InitOpts('1200px', '280px', bg_color='Skyblue'))
             bar.set_global_opts(toolbox_opts=opts.ToolboxOpts(is_show=True))
@@ -484,14 +475,8 @@ class Ui_MainWindow(QTabWidget):
             dfs_1 = dfs_.drop([x for x in df_s1.columns if re.match('.*2021.*预算', x)],axis=1)
             dfs_1.insert(0, '项目', df_item)
 
-            mod=set_mode(df_s1)
 
-            self.tab_0TableView.setModel(mod)
-            self.tab_0TableView.horizontalHeader().setVisible(False)
-            self.tab_0TableView.verticalHeader().setVisible(False)
-            self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            self.tab_0TableView.resizeColumnsToContents()
-            self.tab_0TableView.setColumnWidth(0,120)
+            set_mode(df_s1,self.tab_0TableView)
 
             bar=Bar(init_opts=opts.InitOpts('1200px','280px',bg_color='Skyblue'))
             bar.set_global_opts(toolbox_opts=opts.ToolboxOpts(is_show=True))
@@ -516,14 +501,8 @@ class Ui_MainWindow(QTabWidget):
 
             dfs_.insert(0, '项目', df_item)
 
-            mod=set_mode(dfs_)
+            set_mode(df_s,self.tab_0TableView)
 
-            self.tab_0TableView.setModel(mod)
-            self.tab_0TableView.horizontalHeader().setVisible(False)
-            self.tab_0TableView.verticalHeader().setVisible(False)
-            self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-            self.tab_0TableView.resizeColumnsToContents()
-            self.tab_0TableView.setColumnWidth(0, 120)
 
             dy=dfs_.drop([x for x in dfs_.columns if re.match('.*2021.*实际',x)],axis=1)
             # print(dy)
@@ -611,16 +590,10 @@ class Ui_MainWindow(QTabWidget):
                 ml_df = m_df.T
 
                 ml_df.insert(0, '项目', m_df.columns)
+
                 modf = ml_df.T
 
-                mod=set_mode(modf)
-
-                self.tab_0TableView.setModel(mod)
-                self.tab_0TableView.horizontalHeader().setVisible(False)
-                self.tab_0TableView.verticalHeader().setVisible(False)
-                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                self.tab_0TableView.resizeColumnsToContents()
-                self.tab_0TableView.setColumnWidth(0, 120)
+                set_mode(modf,self.tab_0TableView)
 
                 def bar_(self):
                     bar = Bar(init_opts=opts.InitOpts('950px', '280px', bg_color='skyblue'))
@@ -707,14 +680,7 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf=ml_df.T
 
-                mod=set_mode(modf)
-
-                self.tab_0TableView.setModel(mod)
-                self.tab_0TableView.horizontalHeader().setVisible(False)
-                self.tab_0TableView.verticalHeader().setVisible(False)
-                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                self.tab_0TableView.resizeColumnsToContents()
-                self.tab_0TableView.setColumnWidth(0, 120)
+                set_mode(modf,self.tab_0TableView)
 
                 def bar_(self):
                     bar=Bar(init_opts=opts.InitOpts('950px','280px',bg_color='skyblue'))
@@ -798,15 +764,7 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf = ml_df.T
 
-                mod=set_mode(modf)
-                
-
-                self.tab_0TableView.setModel(mod)
-                self.tab_0TableView.horizontalHeader().setVisible(False)
-                self.tab_0TableView.verticalHeader().setVisible(False)
-                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                self.tab_0TableView.resizeColumnsToContents()
-                self.tab_0TableView.setColumnWidth(0, 120)
+                set_mode(modf,self.tab_0TableView)
 
                 def bar_(self):
                     bar = Bar(init_opts=opts.InitOpts('950px', '280px', bg_color='skyblue'))
@@ -887,15 +845,8 @@ class Ui_MainWindow(QTabWidget):
                 ml_df.insert(0, '项目', m_df.columns)
                 modf = ml_df.T
 
-                mod=set_mode(modf)
-                
-                self.tab_0TableView.setModel(mod)
-                self.tab_0TableView.horizontalHeader().setVisible(False)
-                self.tab_0TableView.verticalHeader().setVisible(False)
-                self.tab_0TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
-                self.tab_0TableView.resizeColumnsToContents()
-                self.tab_0TableView.setColumnWidth(0, 120)
-
+                set_mode(modf,self.tab_0TableView)
+               
                 def bar_(self):
                     bar = Bar(init_opts=opts.InitOpts('950px', '280px', bg_color='skyblue'))
                     bar.add_xaxis(list(dajd.columns))
