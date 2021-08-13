@@ -1,14 +1,14 @@
 import os
 
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtGui import QFont, QIcon, QPalette, QBrush, QPixmap, QStandardItem, QStandardItemModel
+from PyQt5.QtGui import QFont, QIcon,  QBrush, QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import *
 
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 import pandas as pd
 import re
 from PyQt5 import QtGui, QtCore
-from pyecharts.charts import Bar, Gauge, Grid, Tab, Liquid
+from pyecharts.charts import Bar,  Tab, Liquid
 from pyecharts import options as opts
 from pyecharts.globals import SymbolType
 
@@ -45,8 +45,7 @@ def set_mode(DF_,tabView):
     tabView.horizontalHeader().setFont(font)
     tabView.resizeColumnsToContents()
     tabView.setColumnWidth(0, 120)
-    
-    # return model
+ 
 
 
 class Window_(QStandardItemModel):
@@ -80,12 +79,10 @@ class Ui_MainWindow(QTabWidget):
         self.tab_0.setStyleSheet('background-color:#afb4db')
         self.tab_1 = QWidget()
         self.tab_1.setStyleSheet('background-color:#afb4db')
-        self.tab_2 = QWidget()
-        self.tab_2.setStyleSheet('background-color:#afb4db')
-
+      
         self.addTab(self.tab_0, '天工矿业公司经营指标')
         self.addTab(self.tab_1, '天工矿业公司费用汇总(不含新洲)')
-        self.addTab(self.tab_2, '其余各单位经营指标')
+     
         scree = QDesktopWidget()
         scree.screenGeometry()
         self.setFixedSize(scree.width() - 200, scree.height() - 150)  # 固定写法
@@ -95,13 +92,13 @@ class Ui_MainWindow(QTabWidget):
         self.tab_1.setGeometry(self.width() - 1850, self.height() - 1050, self.width() - 200, self.height() - 250)
         self.setTabText(1, '天工费用汇总(不含新洲)')
         self.tab_1TableView = QTableView(self.tab_1)
-        self.tab_1TableView.setGeometry(0, 0, self.width(), 300)
+        self.tab_1TableView.setGeometry(0, 0, self.width(), 400)
         web = QWebEngineView(self.tab_1)
-        web.setGeometry(0, 320, self.width(), 450)
+        web.setGeometry(0, 400, self.width(), 250)
 
         self.QHB = QHBoxLayout()
         self.Widget_01 = QWidget(self.tab_1)
-        self.Widget_01.setGeometry(10, 600, self.width(), 50)
+        self.Widget_01.setGeometry(10, 650, 1050, 50)
 
         QComboBox_0 = QComboBox(self.tab_1)
         QComboBox_0.addItems(['一季度', '二季度', '半年度', '三季度', '四季度'])
@@ -164,47 +161,7 @@ class Ui_MainWindow(QTabWidget):
         self.tab_0QComboBox_0.currentTextChanged.connect(self.jd)
 
         self.tab_0QComboBox_1.currentTextChanged.connect(self.sj)
-        # self.tab_0QComboBox_2.currentTextChanged.connect(self.sj)
-
-    def setUi_2(self):  # 各单位
-        self.tab_2.setGeometry(self.width() - 1850, self.height() - 1050, self.width() - 200, self.height() - 250)
-
-        TableView = QTableView(self.tab_2)
-        TableView.setGeometry(0, 0, self.width(), 300)
-        web = QWebEngineView(self.tab_2)
-
-        web.setGeometry(0, 320, self.width(), 450)
-
-        self.QHB = QHBoxLayout()
-        self.Widget_01 = QWidget(self.tab_2)
-        self.Widget_01.setGeometry(10, 600, 1050, 50)
-        self.Widget_01.setStyleSheet('background-color:#afb4db')
-
-        QComboBox_0 = QComboBox(self.tab_2)
-        QComboBox_0.addItems(['一季度', '二季度', '累计', '三季度', '四季度'])
-        QComboBox_1 = QComboBox(self.tab_2)
-        QComboBox_1.addItems(['预算', '实际', '预算与实际'])
-        QComboBox_2 = QComboBox(self.tab_2)
-        QComboBox_2.addItems(['职工薪酬', '办公费用', '差旅费', '业务用车费', '管理费用', '期间费用', '利润总额'])
-        QComboBox_5 = QComboBox(self.tab_2)
-        QComboBox_5.addItems(['Bar_1', 'Pie'])
-        QComboBox_3 = QComboBox(self.tab_2)
-        QComboBox_3.addItems(['同比', '环比', '全年预算与实际累计'])
-        QComboBox_4 = QComboBox(self.tab_2)
-        QComboBox_4.addItems(['各单位名字（re）'])
-        QComboBox_6 = QComboBox(self.tab_2)
-        QComboBox_6.addItems(['月份'])
-
-        self.QHB.addWidget(QComboBox_4)
-        self.QHB.addWidget(QComboBox_6)
-        self.QHB.addWidget(QComboBox_1)
-        self.QHB.addWidget(QComboBox_2)
-        self.QHB.addWidget(QComboBox_0)
-        self.QHB.addWidget(QComboBox_3)
-
-        self.QHB.addWidget(QComboBox_5)
-        self.QHB.setSpacing(50)
-        self.Widget_01.setLayout(self.QHB)
+    
 
     def uidata_0(self):  # 天工费用汇总数据
         num = []
@@ -243,22 +200,19 @@ class Ui_MainWindow(QTabWidget):
 
         df_1 = df_1.loc[(df_1 != 0).any(axis=1), :]
 
+
+
         df_1.insert(0, '费用项目', df_1.index)
 
-        set_mode(df_1,self.tab_0TableView)
+        df_x=df_1.T
 
-        # model=set_mode(df_1)
+        df_x.insert(0,'项目',df_1.columns)
 
-        # self.tab_1TableView.setEditTriggers(QAbstractItemView.NoEditTriggers)  # 设置不可编辑
-        # self.tab_1TableView.setSortingEnabled(False)  # 设置是否排序
-        # self.tab_1TableView.verticalHeader().setVisible(False)  # 影藏垂直标题
-        # self.tab_1TableView.setAutoFillBackground(True)
-        # self.tab_1TableView.setModel(model)
-        # self.tab_1TableView.setColumnWidth(0, 240)  # 必须在模型设置了以后，再设置列宽与行高
-        # # self.tab_1TableView.setStyleSheet('background-color:#afb4db')，# 父对象设置了就别在设置样式了
+        df_1=df_x.T
 
-        # self.tab_1TableView.horizontalHeader().setFont(font)
-        # self.tab_1TableView.setShowGrid(True)
+        print(df_1.columns)
+
+        set_mode(df_1,self.tab_1TableView)
 
     def setdata_0(self):  # 天工经营指标（数据）
         data = pd.read_excel('天工矿业公司2020年预算目标完成情况统计报表（最终）.xlsx',
@@ -446,6 +400,16 @@ class Ui_MainWindow(QTabWidget):
         if self.tab_0QComboBox_1.currentText()=='实际':
             dfs_=df_s1.drop([x for x in df_s1.columns if re.match('.*2020.*实际',x)],axis=1)
             dfs_1 =dfs_.drop([x for x in df_s1.columns if re.match('.*2021.*预算', x)],axis=1)
+
+            dfs_1['实际累计']=dfs_1.loc['管理费用':,[j for j in dfs_1.columns]].apply(lambda x:x.sum(),axis=1).round(2)
+            
+            dfs_1=dfs_1.fillna('实际累计')
+
+            dfs_1.iloc[12,dfs_1.shape[1]-1]=dfs_1.iloc[12,dfs_1.shape[1]-2]
+
+            
+
+
             dfs_1.insert(0, '项目', df_item)
 
             set_mode(dfs_1,self.tab_0TableView)
@@ -453,8 +417,8 @@ class Ui_MainWindow(QTabWidget):
             bar = Bar(init_opts=opts.InitOpts('1200px', '280px', bg_color='Skyblue'))
             bar.set_global_opts(toolbox_opts=opts.ToolboxOpts(is_show=True))
             bar.add_yaxis(series_name='2021年'+self.tab_0QComboBox_2.currentText() + '走势图',
-                          y_axis=list(dfs_1.loc[self.tab_0QComboBox_2.currentText()])[1:])
-            bar.add_xaxis(list(dfs_1.columns)[1:])
+                          y_axis=list(dfs_1.loc[self.tab_0QComboBox_2.currentText()])[1:len(dfs_1.columns)-1])
+            bar.add_xaxis(list(dfs_1.columns)[1:len(dfs_1.columns)-1])
             bar.set_global_opts(datazoom_opts=opts.DataZoomOpts(type_='inside'),
                                 title_opts=opts.TitleOpts('Bar_'+self.tab_0QComboBox_2.currentText()+'->指标单位[万元:元:标吨]'),
                                 tooltip_opts=opts.TooltipOpts(trigger='axis',axis_pointer_type='cross')
@@ -473,16 +437,23 @@ class Ui_MainWindow(QTabWidget):
         elif self.tab_0QComboBox_1.currentText()=='同期':
             dfs_ = df_s1.drop([x for x in df_s1.columns if re.match('.*2021.*实际', x)],axis=1)
             dfs_1 = dfs_.drop([x for x in df_s1.columns if re.match('.*2021.*预算', x)],axis=1)
+
+            dfs_1['同期累计']=dfs_1.loc['管理费用':,[j for j in dfs_1.columns]].apply(lambda x:x.sum(),axis=1).round(2)
+            
+            dfs_1=dfs_1.fillna('同期累计')
+
+            dfs_1.iloc[12,dfs_1.shape[1]-1]=dfs_1.iloc[12,dfs_1.shape[1]-2]
+
             dfs_1.insert(0, '项目', df_item)
 
 
-            set_mode(df_s1,self.tab_0TableView)
+            set_mode(dfs_1,self.tab_0TableView)
 
             bar=Bar(init_opts=opts.InitOpts('1200px','280px',bg_color='Skyblue'))
             bar.set_global_opts(toolbox_opts=opts.ToolboxOpts(is_show=True))
             bar.add_yaxis(series_name='2020年'+self.tab_0QComboBox_2.currentText()+'走势图',
-                          y_axis=list(dfs_1.loc[self.tab_0QComboBox_2.currentText()])[1:])
-            bar.add_xaxis(list(dfs_1.columns)[1:])
+                          y_axis=list(dfs_1.loc[self.tab_0QComboBox_2.currentText()])[1:len(dfs_1.columns)-1])
+            bar.add_xaxis(list(dfs_1.columns)[1:len(dfs_1.columns)-1])
             bar.set_global_opts(tooltip_opts=opts.TooltipOpts(trigger='axis',axis_pointer_type='cross'),
                                 datazoom_opts=opts.DataZoomOpts(type_='inside'),
                                 title_opts=opts.TitleOpts(title='Bar_'+self.tab_0QComboBox_2.currentText()+'->指标单位[万元:元:标吨]'),
@@ -959,7 +930,6 @@ if __name__ == '__main__':
     Ui = Ui_MainWindow()
     Ui.setUi_0()
     Ui.setUi_1()
-    Ui.setUi_2()
     Ui.uidata_0()
     Ui.setdata_0()
     Ui.show()
